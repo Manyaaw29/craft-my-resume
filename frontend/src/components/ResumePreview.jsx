@@ -32,13 +32,13 @@ const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
       <style>
         {`
             @page {
-            size: letter;
+            size: A4;
             margin: 0;
             }
             @media print {
             html,body{
-            width: 8.5in;
-            height: 11in;
+            width: 210mm;
+            height: 297mm;
             overflow: hidden;
             }
 

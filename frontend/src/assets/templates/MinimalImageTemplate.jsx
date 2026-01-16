@@ -14,32 +14,32 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
     <div className="max-w-5xl mx-auto bg-white text-zinc-800">
       <div className="grid grid-cols-3">
         {/* Image */}
-        <div className="col-span-1 py-10">
+        <div className="col-span-1 py-8">
           {data.personal_info?.image &&
           typeof data.personal_info.image === "string" ? (
-            <div className="mb-6">
+            <div className="mb-3">
               <img
                 src={data.personal_info.image}
                 alt="Profile"
-                className="w-32 h-32 object-cover rounded-full mx-auto"
+                className="w-24 h-24 object-cover rounded-full mx-auto"
                 style={{ background: accentColor + "70" }}
               />
             </div>
           ) : data.personal_info?.image &&
             typeof data.personal_info.image === "object" ? (
-            <div className="mb-6">
+            <div className="mb-3">
               <img
                 src={URL.createObjectURL(data.personal_info.image)}
                 alt="Profile"
-                className="w-32 h-32 object-cover rounded-full mx-auto"
+                className="w-24 h-24 object-cover rounded-full mx-auto"
               />
             </div>
           ) : null}
         </div>
 
         {/* Name */}
-        <div className="col-span-2 flex flex-col justify-center py-10 px-8">
-          <h1 className="text-4xl font-bold text-zinc-700 tracking-widest">
+        <div className="col-span-2 flex flex-col justify-center py-8 px-8">
+          <h1 className="text-4xl font-bold text-zinc-700 tracking-wide">
             {data.personal_info?.full_name || "Your Name"}
           </h1>
           <p className="uppercase text-zinc-600 font-medium text-sm tracking-widest">
@@ -50,11 +50,11 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
         {/* Sidebar */}
         <aside className="col-span-1 border-r border-zinc-400 p-6 pt-0">
           {/* Contact */}
-          <section className="mb-8">
-            <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
+          <section className="mb-7">
+            <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-2">
               CONTACT
             </h2>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-1.5" style={{ fontSize: "11px" }}>
               {data.personal_info?.phone && (
                 <div className="flex items-center gap-2">
                   <Phone size={14} style={{ color: accentColor }} />
@@ -73,76 +73,69 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                   <span>{data.personal_info.location}</span>
                 </div>
               )}
+              {data.personal_info?.github && (
+                <a
+                  href={data.personal_info.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 hover:opacity-70 transition"
+                >
+                  <Github size={14} style={{ color: accentColor }} />
+                  <span>
+                    {data.personal_info.github
+                      .split("github.com/")[1]
+                      ?.split("/")[0] ||
+                      data.personal_info.github.split("//")[1]?.split("/")[0] ||
+                      "GitHub"}
+                  </span>
+                </a>
+              )}
+              {data.personal_info?.linkedin && (
+                <a
+                  href={data.personal_info.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 hover:opacity-70 transition"
+                >
+                  <Linkedin size={14} style={{ color: accentColor }} />
+                  <span>
+                    {data.personal_info.linkedin
+                      .split("linkedin.com/in/")[1]
+                      ?.split("/")[0] ||
+                      data.personal_info.linkedin
+                        .split("linkedin.com/")[1]
+                        ?.split("/")[0] ||
+                      "LinkedIn"}
+                  </span>
+                </a>
+              )}
+              {data.personal_info?.website && (
+                <a
+                  href={data.personal_info.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 hover:opacity-70 transition"
+                >
+                  <Globe size={14} style={{ color: accentColor }} />
+                  <span>
+                    {data.personal_info.website
+                      .split("://")[1]
+                      ?.split("/")[0] ||
+                      data.personal_info.website.split("/")[0] ||
+                      "Website"}
+                  </span>
+                </a>
+              )}
             </div>
           </section>
 
-          {/* Links */}
-          {(data.personal_info?.website ||
-            data.personal_info?.linkedin ||
-            data.personal_info?.github) && (
-            <section className="mb-8">
-              <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
-                LINKS
-              </h2>
-              <div className="space-y-2 text-sm">
-                {data.personal_info?.linkedin && (
-                  <div className="flex items-center gap-2">
-                    <Linkedin size={14} style={{ color: accentColor }} />
-                    <a
-                      href={data.personal_info.linkedin}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="break-all hover:underline text-xs"
-                    >
-                      {data.personal_info.linkedin
-                        .replace("https://www.linkedin.com/in/", "")
-                        .replace("https://linkedin.com/in/", "")
-                        .replace("https://www.", "")
-                        .replace("https://", "")}
-                    </a>
-                  </div>
-                )}
-                {data.personal_info?.website && (
-                  <div className="flex items-center gap-2">
-                    <Globe size={14} style={{ color: accentColor }} />
-                    <a
-                      href={data.personal_info.website}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="break-all hover:underline text-xs"
-                    >
-                      {data.personal_info.website
-                        .replace("https://www.", "")
-                        .replace("https://", "")}
-                    </a>
-                  </div>
-                )}
-                {data.personal_info?.github && (
-                  <div className="flex items-center gap-2">
-                    <Github size={14} style={{ color: accentColor }} />
-                    <a
-                      href={data.personal_info.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="break-all hover:underline text-xs"
-                    >
-                      {data.personal_info.github
-                        .replace("https://github.com/", "")
-                        .replace("https://", "")}
-                    </a>
-                  </div>
-                )}
-              </div>
-            </section>
-          )}
-
           {/* Education (FIXED) */}
           {data.education && data.education.length > 0 && (
-            <section className="mb-8">
-              <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
+            <section className="mb-7">
+              <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-2">
                 EDUCATION
               </h2>
-              <div className="space-y-4 text-sm">
+              <div className="space-y-3" style={{ fontSize: "11px" }}>
                 {data.education.map((edu, index) => (
                   <div key={index}>
                     <p className="font-semibold uppercase">
@@ -151,7 +144,7 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                     </p>
                     <p className="text-zinc-600">{edu.institution}</p>
 
-                    <p className="text-xs text-zinc-500">
+                    <p className="text-zinc-500">
                       {formatDate(edu.graduation_date)}
                       {edu.score && edu.score_type && (
                         <>
@@ -170,13 +163,30 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
 
           {/* Skills */}
           {data.skills && data.skills.length > 0 && (
-            <section>
-              <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
+            <section className="mb-7">
+              <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-2">
                 SKILLS
               </h2>
-              <ul className="space-y-1 text-sm">
+              <ul className="space-y-1" style={{ fontSize: "11px" }}>
                 {data.skills.map((skill, index) => (
                   <li key={index}>{skill}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* Languages */}
+          {data.languages && data.languages.length > 0 && (
+            <section>
+              <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-2">
+                LANGUAGES
+              </h2>
+              <ul className="space-y-1" style={{ fontSize: "11px" }}>
+                {data.languages.map((lang, index) => (
+                  <li key={index}>
+                    {lang.name}{" "}
+                    <span className="text-zinc-500">({lang.proficiency})</span>
+                  </li>
                 ))}
               </ul>
             </section>
@@ -189,12 +199,12 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
           {data.professional_summary && (
             <section className="mb-8">
               <h2
-                className="text-sm font-semibold tracking-widest mb-3"
+                className="text-base font-semibold tracking-widest mb-3"
                 style={{ color: accentColor }}
               >
                 SUMMARY
               </h2>
-              <p className="text-zinc-700 leading-relaxed">
+              <p className="text-zinc-700 leading-relaxed text-base">
                 {data.professional_summary}
               </p>
             </section>
@@ -202,21 +212,21 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
 
           {/* Experience */}
           {data.experience && data.experience.length > 0 && (
-            <section>
+            <section className="mb-8">
               <h2
-                className="text-sm font-semibold tracking-widest mb-4"
+                className="text-base font-semibold tracking-widest mb-4"
                 style={{ color: accentColor }}
               >
                 EXPERIENCE
               </h2>
-              <div className="space-y-6 mb-8">
+              <div className="space-y-5 mb-8">
                 {data.experience.map((exp, index) => (
                   <div key={index}>
                     <div className="flex justify-between items-center">
-                      <h3 className="font-semibold text-zinc-900">
+                      <h3 className="font-semibold text-zinc-900 text-base">
                         {exp.position}
                       </h3>
-                      <span className="text-xs text-zinc-500">
+                      <span className="text-sm text-zinc-500">
                         {formatDate(exp.start_date)} –{" "}
                         {exp.is_current ? "Present" : formatDate(exp.end_date)}
                       </span>
@@ -241,7 +251,7 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
           {data.project && data.project.length > 0 && (
             <section>
               <h2
-                className="text-sm uppercase tracking-widest font-semibold"
+                className="text-base uppercase tracking-widest font-semibold"
                 style={{ color: accentColor }}
               >
                 PROJECTS
@@ -249,7 +259,7 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
               <div className="space-y-4">
                 {data.project.map((project, index) => (
                   <div key={index}>
-                    <h3 className="text-md font-medium text-zinc-800 mt-3">
+                    <h3 className="text-base font-medium text-zinc-800 mt-3">
                       {project.name}
                     </h3>
                     {project.link && (

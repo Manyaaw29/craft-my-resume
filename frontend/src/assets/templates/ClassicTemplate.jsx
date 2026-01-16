@@ -14,14 +14,14 @@ const ClassicTemplate = ({ data, accentColor }) => {
     <div className="max-w-4xl mx-auto p-8 bg-white text-gray-800 leading-relaxed">
       {/* Header */}
       <header
-        className="text-center mb-8 pb-6 border-b-2"
+        className="text-center mb-6 pb-4 border-b-2"
         style={{ borderColor: accentColor }}
       >
-        <h1 className="text-3xl font-bold mb-2" style={{ color: accentColor }}>
+        <h1 className="text-2xl font-bold mb-1" style={{ color: accentColor }}>
           {data.personal_info?.full_name || "Your Name"}
         </h1>
 
-        <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+        <div className="flex flex-wrap justify-center gap-3 text-xs text-gray-600">
           {data.personal_info?.email && (
             <div className="flex items-center gap-1">
               <Mail className="size-4" />
@@ -63,14 +63,14 @@ const ClassicTemplate = ({ data, accentColor }) => {
 
       {/* Professional Summary */}
       {data.professional_summary && (
-        <section className="mb-6">
+        <section className="mb-5">
           <h2
-            className="text-xl font-semibold mb-3"
+            className="text-lg font-semibold mb-3"
             style={{ color: accentColor }}
           >
             PROFESSIONAL SUMMARY
           </h2>
-          <p className="text-gray-700 leading-relaxed">
+          <p className="text-gray-700 leading-relaxed text-sm">
             {data.professional_summary}
           </p>
         </section>
@@ -78,9 +78,9 @@ const ClassicTemplate = ({ data, accentColor }) => {
 
       {/* Experience */}
       {data.experience && data.experience.length > 0 && (
-        <section className="mb-6">
+        <section className="mb-5">
           <h2
-            className="text-xl font-semibold mb-4"
+            className="text-lg font-semibold mb-3"
             style={{ color: accentColor }}
           >
             PROFESSIONAL EXPERIENCE
@@ -90,24 +90,26 @@ const ClassicTemplate = ({ data, accentColor }) => {
             {data.experience.map((exp, index) => (
               <div
                 key={index}
-                className="pl-4 border-l-4"
+                className="pl-3 border-l-2"
                 style={{ borderColor: accentColor }}
               >
-                <div className="flex justify-between items-start mb-2">
+                <div className="flex justify-between items-start mb-1">
                   <div>
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-gray-900 text-sm">
                       {exp.position}
                     </h3>
-                    <p className="text-gray-700 font-medium">{exp.company}</p>
+                    <p className="text-gray-700 font-medium text-xs">
+                      {exp.company}
+                    </p>
                   </div>
-                  <div className="text-sm text-gray-600">
+                  <div className="text-xs text-gray-600">
                     {formatDate(exp.start_date)} –{" "}
                     {exp.is_current ? "Present" : formatDate(exp.end_date)}
                   </div>
                 </div>
 
                 {exp.description && (
-                  <p className="text-gray-700 whitespace-pre-line">
+                  <p className="text-gray-700 whitespace-pre-line text-xs leading-snug">
                     {exp.description}
                   </p>
                 )}
@@ -119,29 +121,31 @@ const ClassicTemplate = ({ data, accentColor }) => {
 
       {/* Projects */}
       {data.project && data.project.length > 0 && (
-        <section className="mb-6">
+        <section className="mb-7">
           <h2
-            className="text-xl font-semibold mb-4"
+            className="text-lg font-semibold mb-4"
             style={{ color: accentColor }}
           >
             PROJECTS
           </h2>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {data.project.map((proj, index) => (
-              <div key={index} className="pl-4 border-l-4 border-gray-300">
-                <p className="font-semibold text-gray-800">{proj.name}</p>
+              <div key={index} className="pl-3 border-l-2 border-gray-300">
+                <p className="font-semibold text-gray-800 text-sm">
+                  {proj.name}
+                </p>
                 {proj.link && (
                   <a
                     href={proj.link}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-blue-600 hover:underline"
+                    className="text-xs text-blue-600 hover:underline"
                   >
                     {proj.link}
                   </a>
                 )}
-                <p className="text-gray-600">{proj.description}</p>
+                <p className="text-gray-600 text-xs">{proj.description}</p>
               </div>
             ))}
           </div>
@@ -150,27 +154,27 @@ const ClassicTemplate = ({ data, accentColor }) => {
 
       {/* Education (FIXED) */}
       {data.education && data.education.length > 0 && (
-        <section className="mb-6">
+        <section className="mb-7">
           <h2
-            className="text-xl font-semibold mb-4"
+            className="text-lg font-semibold mb-4"
             style={{ color: accentColor }}
           >
             EDUCATION
           </h2>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {data.education.map((edu, index) => (
               <div key={index}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-gray-900 text-sm">
                       {edu.degree}
                       {edu.field && ` in ${edu.field}`}
                     </h3>
-                    <p className="text-gray-700">{edu.institution}</p>
+                    <p className="text-gray-700 text-xs">{edu.institution}</p>
                   </div>
 
-                  <div className="text-sm text-gray-600">
+                  <div className="text-xs text-gray-600">
                     {formatDate(edu.graduation_date)}
                     {edu.score && edu.score_type && (
                       <>
@@ -190,18 +194,38 @@ const ClassicTemplate = ({ data, accentColor }) => {
 
       {/* Skills */}
       {data.skills && data.skills.length > 0 && (
-        <section className="mb-6">
+        <section className="mb-7">
           <h2
-            className="text-xl font-semibold mb-4"
+            className="text-lg font-semibold mb-2"
             style={{ color: accentColor }}
           >
             CORE SKILLS
           </h2>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             {data.skills.map((skill, index) => (
-              <span key={index} className="text-gray-700">
+              <span key={index} className="text-gray-700 text-xs">
                 • {skill}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Languages */}
+      {data.languages && data.languages.length > 0 && (
+        <section className="mb-3">
+          <h2
+            className="text-lg font-semibold mb-2"
+            style={{ color: accentColor }}
+          >
+            LANGUAGES
+          </h2>
+
+          <div className="flex flex-wrap gap-2">
+            {data.languages.map((lang, index) => (
+              <span key={index} className="text-gray-700 text-xs">
+                • {lang.name} ({lang.proficiency})
               </span>
             ))}
           </div>

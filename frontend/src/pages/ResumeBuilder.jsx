@@ -26,6 +26,7 @@ import Experience from "../components/Experience";
 import Education from "../components/Education";
 import Projects from "../components/Projects";
 import Skills from "../components/Skills";
+import Languages from "../components/Languages";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams();
@@ -39,6 +40,7 @@ const ResumeBuilder = () => {
     education: [],
     project: [],
     skills: [],
+    languages: [],
     template: "classic",
     accent_color: "#3b82f6",
     public: false,
@@ -54,6 +56,7 @@ const ResumeBuilder = () => {
     { id: "education", name: "Education", icon: GraduationCap },
     { id: "project", name: "Projects", icon: FolderIcon },
     { id: "skills", name: "Skills", icon: Sparkles },
+    { id: "languages", name: "Languages", icon: Sparkles },
   ];
 
   const activeSection = sections[activeSectionIndex];
@@ -247,10 +250,20 @@ const ResumeBuilder = () => {
                   }
                 />
               )}
+              {activeSection.id === "languages" && (
+                <Languages
+                  data={resumeData.languages}
+                  onChange={(data) =>
+                    setResumeData((prev) => ({
+                      ...prev,
+                      languages: data,
+                    }))
+                  }
+                />
+              )}
             </div>
 
             <button
-           
               className="
             mt-6 px-6 py-2 text-sm font-medium rounded-md
             bg-gradient-to-br from-green-100 to-green-200

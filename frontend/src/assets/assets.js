@@ -31,6 +31,11 @@ export const dummyResumeData = [
       "NodeJS",
       "TypeScript",
     ],
+    languages: [
+      { name: "English", proficiency: "Fluent" },
+      { name: "Hindi", proficiency: "Native" },
+      { name: "Spanish", proficiency: "Basic" },
+    ],
     experience: [
       {
         company: "Example Technologies.",
@@ -131,6 +136,11 @@ export const dummyResumeData = [
       "Web Accessibility",
       "REST APIs",
     ],
+    languages: [
+      { name: "English", proficiency: "Native" },
+      { name: "French", proficiency: "Intermediate" },
+      { name: "Mandarin", proficiency: "Basic" },
+    ],
     experience: [
       {
         company: "TechSpark Inc.",
@@ -222,6 +232,10 @@ export const dummyResumeData = [
       "Redis",
       "GraphQL",
       "AWS",
+    ],
+    languages: [
+      { name: "English", proficiency: "Fluent" },
+      { name: "German", proficiency: "Intermediate" },
     ],
     experience: [
       {
