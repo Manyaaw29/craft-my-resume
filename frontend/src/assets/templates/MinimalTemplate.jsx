@@ -28,6 +28,9 @@ const MinimalTemplate = ({ data, accentColor }) => {
           {data.personal_info?.website && (
             <span className="break-all">{data.personal_info.website}</span>
           )}
+          {data.personal_info?.github && (
+            <span className="break-all">{data.personal_info.github}</span>
+          )}
         </div>
       </header>
 
@@ -114,26 +117,28 @@ const MinimalTemplate = ({ data, accentColor }) => {
 
           <div className="space-y-4">
             {data.education.map((edu, index) => (
-              <div key={index} className="flex justify-between items-baseline">
-                <div>
-                  <h3 className="font-medium">
-                    {edu.degree}
-                    {edu.field && ` in ${edu.field}`}
-                  </h3>
-                  <p className="text-gray-600">{edu.institution}</p>
+              <div key={index}>
+                <div className="flex justify-between items-baseline">
+                  <div>
+                    <h3 className="font-medium">
+                      {edu.degree}
+                      {edu.field && ` in ${edu.field}`}
+                    </h3>
+                    <p className="text-gray-600">{edu.institution}</p>
+                  </div>
 
-                  {edu.score && (
-                    <p className="text-sm text-gray-500">
-                      {edu.score_type === "cgpa"
-                        ? `CGPA: ${edu.score}`
-                        : `Percentage: ${edu.score}%`}
-                    </p>
-                  )}
+                  <span className="text-sm text-gray-500">
+                    {formatDate(edu.graduation_date)}
+                    {edu.score && edu.score_type && (
+                      <>
+                        {" • "}
+                        {edu.score_type === "cgpa"
+                          ? `CGPA: ${edu.score}`
+                          : `Percentage: ${edu.score}%`}
+                      </>
+                    )}
+                  </span>
                 </div>
-
-                <span className="text-sm text-gray-500">
-                  {formatDate(edu.graduation_date)}
-                </span>
               </div>
             ))}
           </div>

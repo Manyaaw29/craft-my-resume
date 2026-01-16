@@ -6,6 +6,7 @@ import {
   Phone,
   User,
   Globe,
+  Github,
 } from "lucide-react";
 import React from "react";
 
@@ -23,13 +24,31 @@ const PersonalInfoForm = ({
   };
 
   const fields = [
-    { key: "full_name", label: "Full Name", icon: User, type: "text", required: true },
-    { key: "email", label: "Email Address", icon: MailIcon, type: "email", required: true },
+    {
+      key: "full_name",
+      label: "Full Name",
+      icon: User,
+      type: "text",
+      required: true,
+    },
+    {
+      key: "email",
+      label: "Email Address",
+      icon: MailIcon,
+      type: "email",
+      required: true,
+    },
     { key: "phone", label: "Phone Number", icon: Phone, type: "tel" },
     { key: "location", label: "Location", icon: MapPin, type: "text" },
-    { key: "profession", label: "Profession", icon: BriefcaseBusiness, type: "text" },
+    {
+      key: "profession",
+      label: "Profession",
+      icon: BriefcaseBusiness,
+      type: "text",
+    },
     { key: "linkedin", label: "LinkedIn Profile", icon: Linkedin, type: "url" },
     { key: "website", label: "Personal Website", icon: Globe, type: "url" },
+    { key: "github", label: "GitHub Profile", icon: Github, type: "url" },
   ];
 
   return (

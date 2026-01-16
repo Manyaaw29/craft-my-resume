@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Globe, Github } from "lucide-react";
 
 const ModernTemplate = ({ data, accentColor }) => {
   const formatDate = (dateStr) => {
@@ -67,6 +67,21 @@ const ModernTemplate = ({ data, accentColor }) => {
                 {data.personal_info.website.split("https://")[1]
                   ? data.personal_info.website.split("https://")[1]
                   : data.personal_info.website}
+              </span>
+            </a>
+          )}
+          {data.personal_info?.github && (
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={data.personal_info.github}
+              className="flex items-center gap-2"
+            >
+              <Github className="size-4" />
+              <span className="break-all text-xs">
+                {data.personal_info.github.split("https://github.com/")[1]
+                  ? data.personal_info.github.split("https://github.com/")[1]
+                  : data.personal_info.github}
               </span>
             </a>
           )}
@@ -182,15 +197,15 @@ const ModernTemplate = ({ data, accentColor }) => {
 
                     <p style={{ color: accentColor }}>{edu.institution}</p>
 
-                    <div className="flex justify-between items-center text-sm text-gray-600">
-                      <span>{formatDate(edu.graduation_date)}</span>
-
-                      {edu.score && (
-                        <span>
+                    <div className="text-sm text-gray-600">
+                      {formatDate(edu.graduation_date)}
+                      {edu.score && edu.score_type && (
+                        <>
+                          {" • "}
                           {edu.score_type === "cgpa"
                             ? `CGPA: ${edu.score}`
                             : `Percentage: ${edu.score}%`}
-                        </span>
+                        </>
                       )}
                     </div>
                   </div>

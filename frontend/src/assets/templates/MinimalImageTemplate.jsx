@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Globe, Github } from "lucide-react";
 
 const MinimalImageTemplate = ({ data, accentColor }) => {
   const formatDate = (dateStr) => {
@@ -76,6 +76,66 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
             </div>
           </section>
 
+          {/* Links */}
+          {(data.personal_info?.website ||
+            data.personal_info?.linkedin ||
+            data.personal_info?.github) && (
+            <section className="mb-8">
+              <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
+                LINKS
+              </h2>
+              <div className="space-y-2 text-sm">
+                {data.personal_info?.linkedin && (
+                  <div className="flex items-center gap-2">
+                    <Linkedin size={14} style={{ color: accentColor }} />
+                    <a
+                      href={data.personal_info.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="break-all hover:underline text-xs"
+                    >
+                      {data.personal_info.linkedin
+                        .replace("https://www.linkedin.com/in/", "")
+                        .replace("https://linkedin.com/in/", "")
+                        .replace("https://www.", "")
+                        .replace("https://", "")}
+                    </a>
+                  </div>
+                )}
+                {data.personal_info?.website && (
+                  <div className="flex items-center gap-2">
+                    <Globe size={14} style={{ color: accentColor }} />
+                    <a
+                      href={data.personal_info.website}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="break-all hover:underline text-xs"
+                    >
+                      {data.personal_info.website
+                        .replace("https://www.", "")
+                        .replace("https://", "")}
+                    </a>
+                  </div>
+                )}
+                {data.personal_info?.github && (
+                  <div className="flex items-center gap-2">
+                    <Github size={14} style={{ color: accentColor }} />
+                    <a
+                      href={data.personal_info.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="break-all hover:underline text-xs"
+                    >
+                      {data.personal_info.github
+                        .replace("https://github.com/", "")
+                        .replace("https://", "")}
+                    </a>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
           {/* Education (FIXED) */}
           {data.education && data.education.length > 0 && (
             <section className="mb-8">
@@ -91,16 +151,16 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                     </p>
                     <p className="text-zinc-600">{edu.institution}</p>
 
-                    {edu.score && (
-                      <p className="text-xs text-zinc-500">
-                        {edu.score_type === "cgpa"
-                          ? `CGPA: ${edu.score}`
-                          : `Percentage: ${edu.score}%`}
-                      </p>
-                    )}
-
                     <p className="text-xs text-zinc-500">
                       {formatDate(edu.graduation_date)}
+                      {edu.score && edu.score_type && (
+                        <>
+                          {" • "}
+                          {edu.score_type === "cgpa"
+                            ? `CGPA: ${edu.score}`
+                            : `Percentage: ${edu.score}%`}
+                        </>
+                      )}
                     </p>
                   </div>
                 ))}
