@@ -38,10 +38,9 @@ const ResumeSchema = new mongoose.Schema(
 
     languages: [
       {
-        name: { type: String, required: true },
+        name: { type: String },
         proficiency: {
           type: String,
-          required: true,
           enum: ["Native", "Fluent", "Professional", "Conversational", "Basic"],
           default: "Fluent",
         },
