@@ -36,6 +36,18 @@ const ResumeSchema = new mongoose.Schema(
 
     skills: [{ type: String }],
 
+    languages: [
+      {
+        name: { type: String, required: true },
+        proficiency: {
+          type: String,
+          required: true,
+          enum: ["Native", "Fluent", "Professional", "Conversational", "Basic"],
+          default: "Fluent",
+        },
+      },
+    ],
+
     personal_info: {
       image: { type: String, default: "" },
       full_name: { type: String, default: "" },
@@ -52,10 +64,10 @@ const ResumeSchema = new mongoose.Schema(
       {
         company: { type: String, default: "" },
         position: { type: String, default: "" },
-        start_date: { type: String, default: "" }, 
+        start_date: { type: String, default: "" },
         end_date: { type: String, default: "" },
         is_current: { type: Boolean, default: false },
-        description: { type: String, default: "" }, 
+        description: { type: String, default: "" },
       },
     ],
 
@@ -72,7 +84,7 @@ const ResumeSchema = new mongoose.Schema(
         institution: { type: String, default: "" },
         degree: { type: String, default: "" },
         field: { type: String, default: "" },
-        graduation_date: { type: String, default: "" }, 
+        graduation_date: { type: String, default: "" },
         score_type: {
           type: String,
           enum: ["percentage", "cgpa"],
