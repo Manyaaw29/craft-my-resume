@@ -29,42 +29,50 @@ const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
         {renderTemplate()}
       </div>
 
-      <style>
-        {`
-            @page {
-            size: A4;
-            margin: 0;
-            }
-            @media print {
-            html,body{
-            width: 210mm;
-            height: 297mm;
-            overflow: hidden;
-            }
+   <style>
+  {`
+    @page {
+      size: A4;
+      margin: 0;
+    }
 
-            body *{
-            visibility: hidden;
-            }
+    @media print {
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        overflow: hidden;
+      }
 
-            #resume-preview, #resume-preview *{
-            visibility: visible;
-            }
+    
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
 
-            #resume-preview{
-            position: absolute;
-            left: 0;
-            top: 0;
-            width:100%;
-            height:auto;
-            margin:0;
-            padding:0;
-            box-shadow:none !important;
-            border:none !important;
-            }
-            }
+      body * {
+        visibility: hidden;
+      }
 
-            `}
-      </style>
+      #resume-preview,
+      #resume-preview * {
+        visibility: visible;
+      }
+
+      #resume-preview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        box-shadow: none !important;
+        border: none !important;
+      }
+    }
+  `}
+</style>
+
     </div>
   );
 };
