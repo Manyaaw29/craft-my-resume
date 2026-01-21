@@ -98,10 +98,12 @@ export const updateResume = async (req, res) => {
       } catch (parseError) {
         return res.status(400).json({ message: "Invalid JSON in resumeData" });
       }
-    } else {
+    } else if (typeof resumeData === "object" && resumeData !== null) {
       resumeDataCopy = resumeData;
+    } else {
+      return res.status(400).json({ message: "resumeData must be an object or valid JSON string" });
     }
-
+    
     if (image) {
       const imageBufferData = fs.createReadStream(image.path);
       const response = await imageKit.files.upload({
