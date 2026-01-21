@@ -1,13 +1,14 @@
 import { MailIcon, LockIcon, User2Icon } from "lucide-react";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import api from "../configs/api";
 import { login } from "../app/features/authSlice";
 import toast from "react-hot-toast";
 
 const Login = () => {
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const query = new URLSearchParams(window.location.search);
   const urlState = query.get("state");
 
@@ -22,12 +23,13 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const {data} = await api.post(`/api/users/${state}`, formData);
+      const { data } = await api.post(`/api/users/${state}`, formData);
       dispatch(login(data));
       localStorage.setItem("token", data.token);
       toast.success(data.message);
+      navigate("/app");
     } catch (error) {
-      
+      toast.error(error?.response?.data?.message || error.message);
     }
   };
 
@@ -129,9 +131,7 @@ const Login = () => {
           {state === "login"
             ? "Don’t have an account?"
             : "Already have an account?"}{" "}
-          <span className="text-fuchsia-600 hover:underline">
-            Click here
-          </span>
+          <span className="text-fuchsia-600 hover:underline">Click here</span>
         </p>
       </form>
     </div>

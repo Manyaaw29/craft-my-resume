@@ -27,9 +27,13 @@ import Education from "../components/Education";
 import Projects from "../components/Projects";
 import Skills from "../components/Skills";
 import Languages from "../components/Languages";
+import { useSelector } from "react-redux";
+import api from "../configs/api";
+import { toast } from "react-hot-toast";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams();
+  const { token } = useSelector((state) => state.auth);
 
   const [resumeData, setResumeData] = useState({
     _id: "",
@@ -61,20 +65,60 @@ const ResumeBuilder = () => {
 
   const activeSection = sections[activeSectionIndex];
 
-  const loadExistingResume = async (resumeId) => {
-    const resume = dummyResumeData.find((r) => r._id === resumeId);
-    if (resume) {
-      setResumeData(resume);
-      document.title = resume.title;
+  const loadExistingResume = async () => {
+    try {
+      const { data } = await api.get(`api/resumes/get/` + resumeId, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (data.resume) {
+        setResumeData(data.resume);
+        document.title = data.resume.title;
+      
+        localStorage.setItem(`resume_${resumeId}`, JSON.stringify(data.resume));
+      }
+    } catch (error) {
+      console.log(error.message);
+     
+      const savedResume = localStorage.getItem(`resume_${resumeId}`);
+      if (savedResume) {
+        setResumeData(JSON.parse(savedResume));
+      }
     }
   };
 
   useEffect(() => {
-    loadExistingResume(resumeId);
-  }, [resumeId]);
+    if (resumeId && token) {
+      loadExistingResume();
+    }
+  }, [resumeId, token]);
+
+  useEffect(() => {
+    if (resumeData._id && resumeId) {
+      localStorage.setItem(`resume_${resumeId}`, JSON.stringify(resumeData));
+    }
+  }, [resumeData, resumeId]);
 
   const changeResumeVisibility = async () => {
-    setResumeData({ ...resumeData, public: !resumeData.public });
+    try {
+      const formData = new FormData();
+      formData.append("resumeId", resumeId);
+      formData.append(
+        "resumeData",
+        JSON.stringify({ public: !resumeData.public }),
+      );
+
+      const { data } = await api.put(`api/resumes/update`, formData, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      setResumeData({ ...resumeData, public: !resumeData.public });
+      toast.success(data.message);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   const handleShare = () => {
@@ -95,9 +139,37 @@ const ResumeBuilder = () => {
     window.print();
   };
 
+  const saveResume = async () => {
+    try {
+      let updatedResumeData = structuredClone(resumeData);
+
+      //remove image from updatedResumeData
+      if (typeof resumeData.personal_info.image === "object") {
+        delete updatedResumeData.personal_info.image;
+      }
+
+      const formData = new FormData();
+      formData.append("resumeId", resumeId);
+      formData.append("resumeData", JSON.stringify(updatedResumeData));
+      removeBackground && formData.append("removeBackground", "yes");
+      typeof resumeData.personal_info.image === "object" &&
+        formData.append("image", resumeData.personal_info.image);
+
+      const { data } = await api.put(`api/resumes/update`, formData, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      setResumeData(data.resume);
+      // Save to localStorage as backup
+      localStorage.setItem(`resume_${resumeId}`, JSON.stringify(data.resume));
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
-      {/* BACK */}
+    
       <Link
         to="/app"
         className="inline-flex gap-2 items-center text-slate-500 hover:text-slate-700 transition"
@@ -160,7 +232,7 @@ const ResumeBuilder = () => {
                   <button
                     onClick={() =>
                       setActiveSectionIndex((prev) =>
-                        Math.min(prev + 1, sections.length - 1)
+                        Math.min(prev + 1, sections.length - 1),
                       )
                     }
                     disabled={activeSectionIndex === sections.length - 1}
@@ -265,16 +337,23 @@ const ResumeBuilder = () => {
 
             <button
               className="
-            mt-6 px-6 py-2 text-sm font-medium rounded-md
-            bg-gradient-to-br from-green-100 to-green-200
-            text-green-700
-            ring-1 ring-green-300
-            hover:ring-green-400
-            hover:shadow-sm
-            transition-all
-            focus:outline-none
-            focus-visible:ring-2 focus-visible:ring-green-400
-          "
+                mt-6 px-6 py-2 text-sm font-medium rounded-md
+                bg-gradient-to-br from-green-100 to-green-200
+                text-green-700
+                ring-1 ring-green-300
+                hover:ring-green-400
+                hover:shadow-sm
+                transition-all
+                focus:outline-none
+                focus-visible:ring-2 focus-visible:ring-green-400
+              "
+              onClick={() => {
+                toast.promise(saveResume(), {
+                  loading: "Saving Resume...",
+                  success: "Resume saved successfully!",
+                  error: "Failed to save resume",
+                });
+              }}
             >
               Save Changes
             </button>

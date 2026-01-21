@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { dummyResumeData } from '../assets/assets';
+
 import ResumePreview from '../components/ResumePreview';
 import { ArrowLeft } from 'lucide-react';
 import notFound from '../assets/not_found.jpg';
+import api from '../configs/api';
 
 const Loader = () => (
   <div className="flex items-center justify-center h-screen">
@@ -18,8 +19,16 @@ const Preview = () => {
   const [resumeData, setResumeData] = React.useState(null);
 
   const loadResume = async () => {
-    setResumeData(dummyResumeData.find(resume => resume._id === resumeId) || null);
-    setIsLoading(false);
+    try {
+      const {data} = await api.get('/api/resumes/public/' + resumeId);
+      setResumeData(data.resume);
+     
+    } catch (error) {
+      console.log(error.message);
+    }
+    finally{
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
