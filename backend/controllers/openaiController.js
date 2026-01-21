@@ -78,11 +78,16 @@ export const uploadResume = async (req, res) => {
     const systemPrompt =
       "You are an expert AI agent that extracts data from resume";
 
-    const userPrompt = `Extract data from this resume : ${resumeText}
+  const userPrompt = `Extract data from this resume : ${resumeText}
         
-        Provide the data in the following JSON format with no additional explanations or text:
+        Provide the data in the following JSON format with no additional explanations or text.
+        IMPORTANT: Convert all dates to YYYY-MM format. For example:
+        - "June 2023" should be "2023-06"
+        - "January 2024" should be "2024-01"
+        - "Dec 2022" should be "2022-12"
+        If end_date is "Present" or "Current", set is_current to true and leave end_date as empty string.
 
-          professional_summary: {
+      professional_summary: {
       type: String,
       default: "",
     },
@@ -144,7 +149,7 @@ export const uploadResume = async (req, res) => {
         },
         score: { type: String, default: "" },
       },
-    ],
+    ]
         
         `;
 
@@ -166,7 +171,7 @@ export const uploadResume = async (req, res) => {
       title,
       ...parsedData,
     });
-    res.json({ resumeId: newResume._id });
+    res.json({ resume : newResume });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
