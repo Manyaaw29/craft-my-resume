@@ -1,15 +1,17 @@
-import React from "react";
+import React, { use } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
 
 const Hero = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const {user} = useSelector((state) => state.auth);
+
   return (
     <>
       <div className="min-h-screen pb-20 bg-gradient-to-br from-purple-50 via-pink-50 to-white relative overflow-hidden">
-        {/* Professional Grid Pattern Background */}
         <div className="absolute inset-0 opacity-[0.03]">
           <div
             className="absolute inset-0"
@@ -23,12 +25,10 @@ const Hero = () => {
           ></div>
         </div>
 
-        {/* Subtle Gradient Overlays */}
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-purple-100/40 to-transparent"></div>
         <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-pink-100/40 to-transparent"></div>
 
-        {/* Navbar - Sticky */}
-        <nav className="fixed  top-0 z-50 flex items-center  justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-40 text-sm bg-gradient-to-r from-pink-100/60 via-purple-100/60 to-white/60 backdrop-blur-md border-b border-purple-200/40 shadow-sm">
+        <nav className="fixed top-0 z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-40 text-sm bg-gradient-to-r from-pink-100/60 via-purple-100/60 to-white/60 backdrop-blur-md border-b border-purple-200/40 shadow-sm">
           <a href="/" className="flex items-center gap-3 group">
             <div className="relative">
               <img
@@ -59,19 +59,23 @@ const Hero = () => {
           </div>
 
           <div className="flex gap-2">
-            <Link
-              to="/app?state=register"
-              className="hidden md:block px-6 py-2 bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 active:scale-95 transition-all rounded-full text-white shadow-lg"
-            >
-              Build my resume
-            </Link>
-
-            <Link
-              to="/app?state=login"
-              className="hidden md:block px-6 py-2 border-2 border-purple-300/60 active:scale-95 hover:bg-purple-50/80 transition-all rounded-full text-slate-700 hover:text-slate-900"
-            >
-              Sign in
-            </Link>
+            {!user ? (
+              <Link
+                to="/app?state=login"
+                className="hidden md:block relative group bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full px-6 py-2 active:scale-95 transition-all font-medium shadow-lg hover:shadow-xl overflow-hidden"
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+                <span className="relative z-10">Sign in</span>
+              </Link>
+            ) : (
+              <Link 
+                to='/app' 
+                className="hidden md:block relative group bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full px-6 py-2 active:scale-95 transition-all font-medium shadow-lg hover:shadow-xl overflow-hidden"
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+                <span className="relative z-10">Dashboard</span>
+              </Link>
+            )}
           </div>
 
           <button onClick={() => setMenuOpen(true)} className="md:hidden">
@@ -88,35 +92,53 @@ const Hero = () => {
           </button>
         </nav>
 
-        {/* Mobile Menu */}
         <div
           className={`fixed inset-0 z-[100] bg-black/40 backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300 ${
             menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <a href="/" className="text-white">
+          <a href="/" className="text-white" onClick={() => setMenuOpen(false)}>
             Home
           </a>
-          <a href="#features" className="text-white">
+          <a href="#features" className="text-white" onClick={() => setMenuOpen(false)}>
             Features
           </a>
-          <a href="#cta" className="text-white">
-            Get Started
-          </a>
+          {!user && (
+            <a href="#cta" className="text-white" onClick={() => setMenuOpen(false)}>
+              Get Started
+            </a>
+          )}
+          
+          {!user ? (
+            <Link
+              to="/app?state=login"
+              className="relative group bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full px-8 py-2.5 active:scale-95 transition-all font-medium shadow-lg overflow-hidden"
+              onClick={() => setMenuOpen(false)}
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+              <span className="relative z-10">Sign in</span>
+            </Link>
+          ) : (
+            <Link
+              to="/app"
+              className="relative group bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full px-8 py-2.5 active:scale-95 transition-all font-medium shadow-lg overflow-hidden"
+              onClick={() => setMenuOpen(false)}
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+              <span className="relative z-10">Dashboard</span>
+            </Link>
+          )}
 
           <button
             onClick={() => setMenuOpen(false)}
-            className="size-10 bg-purple-600 hover:bg-purple-700 text-white rounded-md flex items-center justify-center"
+            className="size-10 bg-purple-600 hover:bg-purple-700 text-white rounded-md flex items-center justify-center mt-4"
           >
             X
           </button>
         </div>
 
-        {/* Hero Section */}
         <div className="relative grid lg:grid-cols-2 gap-12 items-center px-6 md:px-16 lg:px-24 xl:px-40 mt-24 lg:mt-28">
-          {/* Left Content */}
           <div className="space-y-8">
-            {/* AI Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -141,69 +163,96 @@ const Hero = () => {
               </span>
             </motion.div>
 
-            {/* Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
             >
-              Craft
+              <motion.span
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                Craft
+              </motion.span>
               <br />
-              <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+              <motion.span
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+                className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent inline-block"
+              >
                 Professional
-              </span>
+              </motion.span>
               <br />
-              <span className="text-slate-900">Resumes</span>
+              <motion.span
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="text-slate-900"
+              >
+                Resumes
+              </motion.span>
             </motion.h1>
 
-            {/* Description */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
               className="text-lg text-slate-600 max-w-xl leading-relaxed"
             >
-              Create resumes with expertly designed templates powered by AI
-              assistance.
+              Create stunning resumes with expertly designed templates powered by AI assistance. Stand out from the crowd and land your dream job.
             </motion.p>
 
-            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-start gap-4"
+              transition={{ duration: 0.5, delay: 1 }}
+              className="flex flex-wrap gap-3"
             >
-              <Link
-                to="/app"
-                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white rounded-full px-9 h-12 flex items-center active:scale-95 transition-all font-medium"
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -2 }}
+                className="relative group flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-purple-50 to-purple-100/80 border border-purple-300/50 rounded-full shadow-md hover:shadow-lg transition-all overflow-hidden"
               >
-                Start Building
-                <svg
-                  className="ml-2 w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </Link>
-
-              <button className="flex items-center gap-2 border hover:bg-purple-50 transition rounded-full px-7 h-12 text-slate-700 active:scale-95">
-                View Templates
-              </button>
+                <span className="absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-400/10 to-purple-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+                <div className="relative w-5 h-5 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-sm">
+                  <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <span className="relative text-sm font-semibold bg-gradient-to-r from-purple-700 to-purple-600 bg-clip-text text-transparent">ATS-Friendly</span>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -2 }}
+                className="relative group flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-pink-50 to-pink-100/80 border border-pink-300/50 rounded-full shadow-md hover:shadow-lg transition-all overflow-hidden"
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-pink-600/0 via-pink-400/10 to-pink-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+                <div className="relative w-5 h-5 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center shadow-sm">
+                  <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <span className="relative text-sm font-semibold bg-gradient-to-r from-pink-700 to-pink-600 bg-clip-text text-transparent">AI-Powered</span>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -2 }}
+                className="relative group flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-50 to-orange-100/80 border border-orange-300/50 rounded-full shadow-md hover:shadow-lg transition-all overflow-hidden"
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-orange-600/0 via-orange-400/10 to-orange-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+                <div className="relative w-5 h-5 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-sm">
+                  <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <span className="relative text-sm font-semibold bg-gradient-to-r from-orange-700 to-orange-600 bg-clip-text text-transparent">Save Time</span>
+              </motion.div>
             </motion.div>
           </div>
 
-          {/* Right - Resume Mockup */}
           <div className="relative lg:ml-auto mr-20">
-            {/* Circular Concentric Pink Glow */}
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.div
                 animate={{
@@ -262,7 +311,6 @@ const Hero = () => {
               whileHover={{ scale: 1.05 }}
               className="relative z-10 bg-white rounded-2xl shadow-2xl p-8 max-w-md mx-auto border border-slate-100"
             >
-              {/* Floating Shapes on the card */}
               <motion.div
                 animate={{
                   y: [0, -15, 0],
@@ -305,7 +353,6 @@ const Hero = () => {
                 className="absolute top-2/3 -left-3 w-5 h-5 bg-gradient-to-br from-green-400 to-green-500 rounded-full shadow-xl"
               ></motion.div>
 
-              {/* Resume Header */}
               <div className="flex items-center gap-4 mb-6">
                 <motion.div
                   animate={{
@@ -334,7 +381,6 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* Resume Content Blocks */}
               <div className="space-y-4">
                 <motion.div
                   initial={{ width: 0 }}

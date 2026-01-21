@@ -1,7 +1,37 @@
-import { Sparkles } from "lucide-react";
-import React from "react";
+import { Loader2, Sparkles } from "lucide-react";
 
-const ProfessionalSummary = ({ data, onChange }) => {
+import React from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import api from "../configs/api";
+
+
+const ProfessionalSummary = ({ data, onChange , setResumeData}) => {
+
+  const {token}= useSelector((state) => state.auth);;
+  const [isGenerating, setIsGenerating] = useState(false);
+  
+  const generateSummary = async () => {
+    try {
+      setIsGenerating(true);
+      const prompt = `enhance this professional summary for a resume: ${data}`;
+      const response = await api.post(`/api/openai/enhance-professional-summary`, { userContent: prompt }, {
+        headers: {
+          Authorization: token,
+        },  
+      });
+      setResumeData(prev => ({...prev, professional_summary: response.data.enhancedContent}));
+      toast.success("Summary enhanced successfully!");
+    
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    }
+    finally {
+      setIsGenerating(false);
+    }
+  }
+
   return (
     <div className="space-y-4">
     
@@ -20,9 +50,13 @@ const ProfessionalSummary = ({ data, onChange }) => {
             transition-colors
             disabled:opacity-50
           "
+          disabled={isGenerating}
+          onClick={generateSummary}
         >
-          <Sparkles className="size-4" />
-          AI Enhance
+          {isGenerating ? (<Loader2 className="size-4 animate-spin" />) : (<Sparkles className="size-4" />
+          )}
+          {isGenerating  ? "Enhancing..." : "AI Enhance" }
+      
         </button>
       </div>
 
