@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 //Routes
 app.use('/api/users', userRouter);
 app.use('/api/resumes', resumeRouter);
-app.use('api/openai', openaiRouter);
+app.use('/api/openai', openaiRouter);
 
 
 app.listen(PORT,()=>{
