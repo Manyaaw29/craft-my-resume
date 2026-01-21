@@ -83,16 +83,25 @@ export const getPublicResumeById = async (req, res) => {
 
 // controller for updating a resume
 // PUT : /api/resumes/update
-  
+
 export const updateResume = async (req, res) => {
   try {
     const userId = req.userId;
     const { resumeId, resumeData, removeBackground } = req.body;
     const image = req.file;
-    
-    
-    let resumeDataCopy = JSON.parse(resumeData);
-    
+
+    let resumeDataCopy;
+
+    if (typeof resumeData === "string") {
+      try {
+        resumeDataCopy = JSON.parse(resumeData);
+      } catch (parseError) {
+        return res.status(400).json({ message: "Invalid JSON in resumeData" });
+      }
+    } else {
+      resumeDataCopy = resumeData;
+    }
+
     if (image) {
       const imageBufferData = fs.createReadStream(image.path);
       const response = await imageKit.files.upload({
@@ -106,21 +115,20 @@ export const updateResume = async (req, res) => {
         },
       });
       resumeDataCopy.personal_info.image = response.url;
-      
-   
+
       fs.unlinkSync(image.path);
     }
-    
+
     const resume = await Resume.findOneAndUpdate(
       { _id: resumeId, userId },
       resumeDataCopy,
-      { new: true }
+      { new: true },
     );
-    
+
     if (!resume) {
       return res.status(404).json({ message: "Resume not found" });
     }
-    
+
     return res
       .status(200)
       .json({ message: "Resume updated successfully", resume });
