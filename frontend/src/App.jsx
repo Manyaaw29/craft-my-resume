@@ -54,7 +54,7 @@ const App = () => {
           <Route index element={<Dashboard />} />
         </Route>
         <Route path="app/builder/:resumeId" element={<ResumeBuilder />} />
-        <Route path="/view/:resumeId" element={<Preview />} />
+        <Route path="view/:resumeId" element={<Preview />} />
         <Route path="login" element={<Login />} />
       </Routes>
     </>

@@ -122,18 +122,22 @@ const ResumeBuilder = () => {
   };
 
   const handleShare = () => {
-    const shareUrl = window.location.href.split("app/")[0];
-    const resumeUrl = shareUrl + "view/" + resumeId;
+  const resumeUrl = `${window.location.origin}/view/${resumeId}`;
 
-    if (navigator.share) {
-      navigator.share({
-        url: resumeUrl,
-        text: "Check out my resume!",
-      });
-    } else {
-      alert("Share not supported on this browser.");
-    }
-  };
+  if (navigator.share) {
+    navigator.share({
+      url: resumeUrl,
+      text: "Check out my resume!",
+    });
+  } else {
+    
+    navigator.clipboard.writeText(resumeUrl).then(() => {
+      toast.success("Link copied to clipboard!");
+    }).catch(() => {
+      alert(`Share this link: ${resumeUrl}`);
+    });
+  }
+};
 
   const downloadResume = () => {
     window.print();
