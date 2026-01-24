@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-
 import ResumePreview from '../components/ResumePreview';
 import { ArrowLeft } from 'lucide-react';
 import notFound from '../assets/not_found.jpg';
@@ -14,25 +13,51 @@ const Loader = () => (
 
 const Preview = () => {
   const { resumeId } = useParams();
-
   const [isLoading, setIsLoading] = React.useState(true);
   const [resumeData, setResumeData] = React.useState(null);
+  const [error, setError] = React.useState(null);
 
   const loadResume = async () => {
     try {
-      const {data} = await api.get('/api/resumes/public/' + resumeId);
-      setResumeData(data.resume);
-     
+      setIsLoading(true);
+      setError(null);
+      
+      const { data } = await api.get(`/api/resumes/public/${resumeId}`);
+      
+      if (data && data.resume) {
+        setResumeData(data.resume);
+      } else {
+        setError('Resume not found');
+      }
     } catch (error) {
-      console.log(error.message);
-    }
-    finally{
+      console.error('Error loading resume:', error);
+      
+      // Check for specific error types
+      if (error.response) {
+        if (error.response.status === 404) {
+          setError('Resume not found');
+        } else if (error.response.status === 403) {
+          setError('This resume is private');
+        } else {
+          setError('Failed to load resume');
+        }
+      } else if (error.request) {
+        setError('Network error. Please check your connection.');
+      } else {
+        setError('An unexpected error occurred');
+      }
+    } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    loadResume();
+    if (resumeId) {
+      loadResume();
+    } else {
+      setError('Invalid resume ID');
+      setIsLoading(false);
+    }
   }, [resumeId]);
 
   if (isLoading) {
@@ -52,9 +77,9 @@ const Preview = () => {
     </div>
   ) : (
     <div className="flex flex-col items-center justify-center h-screen px-4">
-      <p className="text-2xl font-semibold text-red-700 mb-4"> 404 - Not Found</p>
+      <p className="text-2xl font-semibold text-red-700 mb-4">404 - Not Found</p>
       <p className="text-center text-gray-600 mb-6">
-        The resume you are looking for does not exist or has been deleted.
+        {error || 'The resume you are looking for does not exist or has been deleted.'}
       </p>
       <img 
         src={notFound} 
