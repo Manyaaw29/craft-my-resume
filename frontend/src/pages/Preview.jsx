@@ -33,7 +33,7 @@ const Preview = () => {
 
   useEffect(() => {
     loadResume();
-  }, []);
+  }, [resumeId]);
 
   if (isLoading) {
     return <Loader />;
