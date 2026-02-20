@@ -2,6 +2,10 @@
 
 A modern, full-stack resume builder application with AI-powered content enhancement, multiple ATS-optimized templates, and seamless export capabilities. Build professional resumes in minutes with intelligent assistance and beautiful designs.
 
+## � Demo
+
+**Live Demo:** [Add your demo link here]
+
 ## ✨ Features
 
 - **🤖 AI Content Enhancement** - Intelligent AI-powered professional summary and job description enhancement using Google Gemini
@@ -15,7 +19,8 @@ A modern, full-stack resume builder application with AI-powered content enhancem
 - **🔐 Secure Authentication** - JWT-based authentication with bcrypt password hashing
 - **📊 Dashboard** - Manage multiple resumes from a centralized dashboard
 
-## 🎯 Resume Sections Supported
+
+## �🎯 Resume Sections Supported
 
 - Personal Information (with optional profile photo)
 - Professional Summary (AI-enhanced)
@@ -192,10 +197,6 @@ resume-builder/
 - `POST /api/openai/enhance-professional-summary` - Enhance professional summary with AI
 - `POST /api/openai/enhance-job-description` - Enhance job description with AI
 - `POST /api/openai/upload-resume` - Extract and parse resume data with AI
-
-## 🌐 Demo
-
-**Live Demo:** [Add your demo link here]
 
 ## 🤝 Contributing
 
