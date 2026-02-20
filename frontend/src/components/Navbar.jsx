@@ -5,20 +5,20 @@ import { useDispatch } from "react-redux";
 import { logout } from "../app/features/authSlice";
 
 const Navbar = () => {
- const {user} = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
- const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const logoutUser = () => {
-    navigate("/");
+    localStorage.removeItem("token");
     dispatch(logout());
+    navigate("/");
   };
 
   return (
     <div className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-slate-200">
       <nav className="flex items-center justify-between max-w-7xl mx-auto px-4 py-4 text-slate-800">
-        
         <Link to="/" className="flex items-center gap-3">
           <img src="/logo.svg" alt="Logo" className="h-10 w-auto" />
           <span className="hidden sm:inline text-lg font-semibold tracking-wide bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
