@@ -104,17 +104,6 @@ const Login = () => {
           />
         </div>
 
-        {state === "login" && (
-          <div className="mt-5 text-left">
-            <button
-              type="button"
-              className="text-[14px] text-fuchsia-600 hover:underline"
-            >
-              Forgot password?
-            </button>
-          </div>
-        )}
-
         <button
           type="submit"
           className="mt-7 w-full h-11 rounded-full text-[15px] text-white font-medium bg-gradient-to-r from-pink-500 to-fuchsia-600 hover:opacity-90 transition"
