@@ -4,7 +4,7 @@ A modern, full-stack resume builder application with AI-powered content enhancem
 
 ## � Demo
 
-**Live Demo:** [Add your demo link here]
+**Live Demo:** https://craft-my-resume-rust.vercel.app/ 
 
 ## ✨ Features
 
